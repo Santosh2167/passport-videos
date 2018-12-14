@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const expressSession = require("express-session");
 const MongoStore = require("connect-mongo")(expressSession);
 const mongoose = require("mongoose");
+const passport = require("passport");
 
 const app = express();
 
@@ -23,6 +24,10 @@ app.use(expressSession({
     store: new MongoStore({mongooseConnection: mongoose.connection})
 
 }));
+
+require("./config/passport");
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(morgan("combined"));
 

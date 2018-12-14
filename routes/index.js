@@ -4,6 +4,7 @@ const pageController = require("./../controllers/page_controller");
 const authenticationController = require("./../controllers/authentication_controller");
 const {celebrate, Joi } = require("celebrate");
 const {authorize, authRedirect} = require("./../middleware/authentication_middleware");
+const passport = require("passport");
 
 router.use("/register",authRedirect);
 router.use("/login",authRedirect);
@@ -17,7 +18,10 @@ router.post("/login",celebrate({
         email:Joi.string().required(),
         password: Joi.string().required()
     }
-}),authenticationController.loginVerify);
+}),passport.authenticate("local",{
+    successRedirect: "/dashboard",
+    failureRedirect: "/login"
+}));
 
 router.get("/register",authenticationController.make);
 
